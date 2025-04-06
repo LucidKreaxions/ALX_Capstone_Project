@@ -24,6 +24,22 @@ class ProductAdmin(admin.ModelAdmin):
         ('Stock & Media', {'fields': ('stock_quantity', 'image')}),
         ('Metadata', {'fields': ('created_at',)}),
     )
+
+
+# Order Admin
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'product', 'quantity', 'total_price', 'status', 'created_at')
+    list_filter = ('status', 'created_at')  # Filter by order status
+    search_fields = ('user__username', 'product__name')  # Search by user or product
+    ordering = ('-created_at',)  # Show latest orders first
+    readonly_fields = ('total_price', 'created_at')  # Ensure total_price isn't manually edited
+    fieldsets = (
+        ('Customer & Product Details', {'fields': ('user', 'product', 'quantity')}),
+        ('Order Status & Pricing', {'fields': ('status', 'total_price')}),
+        ('Timestamps', {'fields': ('created_at',)}),
+    )
+
+
 # Register your models here.
 admin.site.register(Category)
 admin.site.register(Product)
